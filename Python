@@ -1,0 +1,139 @@
+package EXAMS;
+
+import java.util.Scanner;
+
+public class P2Python {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int n = Integer.parseInt(scanner.nextLine());
+
+        String[] command = scanner.nextLine().split(", ");
+        int rowPyton = -1;
+        int colPyton = -1;
+        char[][] matrix = new char[n][n];
+
+        for (int row = 0; row < n; row++) {
+            String rowData = scanner.nextLine().replaceAll("\\s+", "");
+            matrix[row] = rowData.toCharArray();
+            //позиция на питона:
+            if (rowData.contains("s")) {
+                rowPyton = row;
+                colPyton = rowData.indexOf("s");
+            }
+        }
+        //определяне колко храна има в началото по матрицата и след това намалянето й спрямо командите,
+        // ако остане храна (губи), ако храната стане = 0 (прекъсваме задачата):
+
+        int food = 0;
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+
+                if (matrix[row][col] == 'f') {
+                    food++;
+                }
+            }
+        }
+        int lengthPyton = 1;
+
+        for (int i = 0; i < command.length; i++) {
+            String currentCommand = command[i];
+            matrix[rowPyton][colPyton] = '*';
+
+            switch (currentCommand) {
+                case "up":
+                    rowPyton--;
+                    if (rowPyton < 0) {
+                        rowPyton = n - 1;
+                    }
+                    if (matrix[rowPyton][colPyton] == 'f') {
+                        lengthPyton++;
+                        food--;
+                        matrix[rowPyton][colPyton] = '*';
+                        if (food == 0) {
+                            System.out.printf("You win! Final python length is %d%n", lengthPyton);
+                            return;
+                        }
+                    }
+                    if (matrix[rowPyton][colPyton] == 'e') {
+                        System.out.println("You lose! Killed by an enemy!");
+                        return;
+                    }
+                    break;
+                case "down":
+                    rowPyton++;
+                    if (rowPyton >= n) {
+                        rowPyton = 0;
+                    }
+                    if (matrix[rowPyton][colPyton] == 'f') {
+                        lengthPyton++;
+                        food--;
+                        matrix[rowPyton][colPyton] = '*';
+                        if (food == 0) {
+                            System.out.printf("You win! Final python length is %d%n", lengthPyton);
+                            return;
+                        }
+                    }
+                    if (matrix[rowPyton][colPyton] == 'e') {
+                        System.out.println("You lose! Killed by an enemy!");
+                        return;
+                    }
+                    if (food == 0) {
+                        break;
+                    }
+                    break;
+                case "left":
+                    colPyton--;
+                    if (colPyton < 0) {
+                        colPyton = n - 1;
+                    }
+                    if (matrix[rowPyton][colPyton] == 'f') {
+                        lengthPyton++;
+                        food--;
+                        matrix[rowPyton][colPyton] = '*';
+                        if (food == 0) {
+                            System.out.printf("You win! Final python length is %d%n", lengthPyton);
+                            return;
+                        }
+                    }
+                    if (matrix[rowPyton][colPyton] == 'e') {
+                        System.out.println("You lose! Killed by an enemy!");
+                        return;
+                    }
+                    if (food == 0) {
+                        break;
+                    }
+                    break;
+                case "right":
+                    colPyton++;
+                    if (colPyton >= n) {
+                        colPyton = 0;
+                    }
+                    if (matrix[rowPyton][colPyton] == 'f') {
+                        lengthPyton++;
+                        food--;
+                        matrix[rowPyton][colPyton] = '*';
+                        if (food == 0) {
+                            System.out.printf("You win! Final python length is %d%n", lengthPyton);
+                            return;
+                        }
+                    }
+                    if (matrix[rowPyton][colPyton] == 'e') {
+                        System.out.println("You lose! Killed by an enemy!");
+                        return;
+                    }
+                    if (food == 0) {
+                        break;
+                    }
+                    break;
+            }
+        }
+        if (food == 0) {
+            System.out.printf("You win! Final python length is %d%n", lengthPyton);
+        } else if (food > 0) {
+            System.out.printf("You lose! There is still %d food to be eaten.%n", food);
+        } else {
+            System.out.println("You lose! Killed by an enemy!");
+        }
+    }
+}
