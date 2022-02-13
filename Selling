@@ -1,0 +1,110 @@
+package EXAMS;
+
+import java.util.Scanner;
+
+public class P02Selling {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int n = Integer.parseInt(scanner.nextLine());
+        int sellerRow = -1;
+        int sellerCol = -1;
+
+
+        char[][] matrix = new char[n][n];
+
+        // fill the matrix:
+
+        for (int row = 0; row < n; row++) {
+            char[] rowData = scanner.nextLine().toCharArray();
+            for (int col = 0; col < n; col++) {
+                matrix[row][col] = rowData[col];
+                //position:
+                if (matrix[row][col] == 'S') {
+                    sellerRow = row;
+                    sellerCol = col;
+                }
+            }
+        }
+
+        int pRow = -1;
+        int pCol = -1;
+        int sumOfMoney = 0;
+
+        String direction = scanner.nextLine();
+
+        while (direction.equals("up") || direction.equals("down") || direction.equals("left") || direction.equals("right")) {
+            matrix[sellerRow][sellerCol] = '-';
+
+            switch (direction) {
+                case "up":
+                    sellerRow--;
+                    break;
+                case "down":
+                    sellerRow++;
+                    break;
+                case "left":
+                    sellerCol--;
+                    break;
+                case "right":
+                    sellerCol++;
+                    break;
+            }
+            if (sellerRow < 0 || sellerRow >= n || sellerCol < 0 || sellerCol >= n) {
+                System.out.println("Bad news, you are out of the bakery.");
+                break;
+            }
+
+            if (matrix[sellerRow][sellerCol] == 'O') {
+                matrix[sellerRow][sellerCol] = 'S';
+
+                //position the other O:
+
+                for (int row = 0; row < n; row++) {
+                    for (int col = 0; col < n; col++) {
+                        if (matrix[row][col] == 'O') {
+                            pRow = row;
+                            pCol = col;
+                        }
+                    }
+                }
+                matrix[sellerRow][sellerCol] = '-';
+                sellerRow = pRow;
+                sellerCol = pCol;
+            }
+            // sum:
+            int digit = matrix[sellerRow][sellerCol];
+            if (Character.isDigit(digit)) {
+                sumOfMoney += Integer.parseInt(Character.toString((char) digit));
+            }
+
+            matrix[sellerRow][sellerCol] = 'O';
+
+            matrix[sellerRow][sellerCol] = 'S';
+
+            while (sumOfMoney >= 50) {
+                System.out.println("Good news! You succeeded in collecting enough money!");
+                System.out.println("Money: " + sumOfMoney);
+
+                for (int row = 0; row < n; row++) {
+                    for (int col = 0; col < n; col++) {
+                        System.out.print(matrix[row][col]);
+                    }
+                    System.out.println();
+                }
+                return;
+
+            }
+            direction = scanner.nextLine();
+
+        }
+        System.out.println("Money: " + sumOfMoney);
+
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                System.out.print(matrix[row][col]);
+            }
+            System.out.println();
+        }
+    }
+}
