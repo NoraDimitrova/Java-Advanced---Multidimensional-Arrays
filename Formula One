@@ -1,0 +1,125 @@
+package EXAMS;
+
+import java.util.Scanner;
+
+public class P02FormulaOne {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int n = Integer.parseInt(scanner.nextLine());
+
+        int commandCount = Integer.parseInt(scanner.nextLine());
+
+        char[][] matrix = new char[n][n];
+
+        for (int row = 0; row < n; row++) {
+            char[] rowData = scanner.nextLine().toCharArray();
+            for (int col = 0; col < n; col++) {
+                matrix[row][col] = rowData[col];
+            }
+        }
+        // position of the player:
+        int rowPlayer = 0;
+        int colomPlayer = 0;
+
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                char currentelement = matrix[row][col];
+                if (currentelement == 'P') {
+                    rowPlayer = row;
+                    colomPlayer = col;
+                }
+            }
+        }
+        for (int i = 1; i <= commandCount; i++) {
+            String command = scanner.nextLine();
+
+            matrix[rowPlayer][colomPlayer] = '.';
+
+            switch (command) {
+                //up, down, left or right
+                case "up":
+                    rowPlayer--;
+                    if (rowPlayer < 0) {
+                        rowPlayer = n - 1;
+                    }
+                    if (matrix[rowPlayer][colomPlayer] == 'B') {
+                        rowPlayer--;
+                    }
+                    if (matrix[rowPlayer][colomPlayer] == 'T') {
+                        rowPlayer++;
+                    }
+                    if (matrix[rowPlayer][colomPlayer] == 'F') {
+                        break;
+                    }
+
+                    break;
+                case "down":
+                    rowPlayer++;
+                    if (rowPlayer >= n) {
+                        rowPlayer = 0;
+                    }
+                    if (matrix[rowPlayer][colomPlayer] == 'B') {
+                        rowPlayer++;
+                    }
+                    if (matrix[rowPlayer][colomPlayer] == 'T') {
+                        rowPlayer--;
+                    }
+                    if (matrix[rowPlayer][colomPlayer] == 'F') {
+                        break;
+                    }
+                    break;
+                case "left":
+                    colomPlayer--;
+                    if (colomPlayer < 0) {
+                        colomPlayer = n - 1;
+                    }
+                    if (matrix[rowPlayer][colomPlayer] == 'B') {
+                        colomPlayer--;
+                        if (colomPlayer < 0) {
+                            colomPlayer = n - 1;
+                        }
+                    }
+                    if (matrix[rowPlayer][colomPlayer] == 'T') {
+                        colomPlayer++;
+                    }
+                    if (matrix[rowPlayer][colomPlayer] == 'F') {
+                        break;
+                    }
+                    break;
+                case "right":
+                    colomPlayer++;
+                    if (colomPlayer >= n) {
+                        colomPlayer = 0;
+                    }
+                    if (matrix[rowPlayer][colomPlayer] == 'B') {
+                        colomPlayer++;
+                    }
+                    if (matrix[rowPlayer][colomPlayer] == 'T') {
+                        colomPlayer--;
+                    }
+                    if (matrix[rowPlayer][colomPlayer] == 'F') {
+                        break;
+                    }
+                    break;
+            }
+
+        }
+        if (matrix[rowPlayer][colomPlayer] == 'F') {
+            matrix[rowPlayer][colomPlayer] = 'P';
+            System.out.println("Well done, the player won first place!");
+        } else {
+            matrix[rowPlayer][colomPlayer] = 'P';
+            System.out.println("Oh no, the player got lost on the track!");
+        }
+
+        for (int row = 0; row < n; row++) {
+            for (int col = 0; col < n; col++) {
+                System.out.print(matrix[row][col]);
+            }
+            System.out.println();
+        }
+
+    }
+
+}
